@@ -5,7 +5,7 @@ for(const script of scripts)new vm.Script(script);
 let seed=712683;const randomMath=Object.create(Math);randomMath.random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
 for(const removed of ['magicEnergy','celebrateEnergy','energy-celebration','magic-energy','energized'])assert(!html.includes(removed),removed+' must be removed');
 const context=vm.createContext({Math:randomMath,Date});
-vm.runInContext(scripts.find(s=>s.includes('const BANK ='))+'\n'+scripts.find(s=>s.includes('const Trainer ='))+'\nglobalThis.T=Trainer;globalThis.B=BANK;',context);
+vm.runInContext(scripts.find(s=>s.includes('const BANK ='))+'\n'+scripts.find(s=>s.includes('const Trainer ='))+'\n'+scripts.find(s=>s.includes('const Exam ='))+'\nglobalThis.T=Trainer;globalThis.B=BANK;',context);
 const {T,B}=context,group=id=>B.find(c=>c.id===id).group;
 function next(s){const r=T.next(s,true);assert(r.question);return r.question}
 function answer(s,id,correct){s.current={id,variant:0,order:[0,1,2,3],answered:false};return T.answer(s,correct?0:1)}
