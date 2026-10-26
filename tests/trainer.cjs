@@ -40,4 +40,9 @@ for(const c of B){const before=context.renderQuestion(c.id,false),after=context.
 vm.runInContext(`globalThis.renderCourse=(complete)=>{state=Trainer.fresh();for(const c of BANK.filter(c=>c.group==='hardware'))Trainer.progress(state,c.id).streak=complete?5:4;let output='';shell=html=>output=html;home();return output};`,context);
 assert(context.renderCourse(true).includes('Грандмастер механизмов'));assert(context.renderCourse(true).includes('chapter-mastered'));assert(!context.renderCourse(false).includes('Грандмастер механизмов'));assert(!context.renderCourse(true).includes('Капитан программ'));
 const neutral=context.neutralMap();assert(!neutral.includes('aria-current="step"'));assert(!neutral.includes('undefined'));
+// The title dialog continues directly into a question, including after a separately selected chapter.
+context.clearInterval=()=>{};context.window={scrollTo(){}};
+vm.runInContext(`globalThis.titleFlow=(allDone)=>{state=Trainer.fresh();for(const c of BANK.filter(c=>allDone||c.group==='hardware'))Trainer.progress(state,c.id).streak=5;state.scope='hardware';closeChapterReward=()=>{};save=()=>{};quiz=()=>{};completed=()=>{};continueChapter();return {scope:state.scope,page,question:state.current}};`,context);
+const continued=context.titleFlow(false);assert.equal(continued.scope,'all');assert.equal(continued.page,'quiz');assert(continued.question);assert.notEqual(group(continued.question.id),'hardware');
+const finished=context.titleFlow(true);assert.equal(finished.page,'done');assert.equal(finished.question,null);
 console.log('PASS: shuffled 50/50 section mixing, coverage of all four focal concepts, one-ray penalty, mastery, chapter titles, saved-state migration, no concept/star hints before answering.');
