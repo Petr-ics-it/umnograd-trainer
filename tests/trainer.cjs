@@ -34,7 +34,7 @@ const legacy={version:2,scheduleVersion:1,focusConcept:'cpu',focusNext:true,step
 legacy.version=1;legacy.progress.cpu.streak=3;T.upgrade(legacy);assert.equal(legacy.progress.cpu.streak,5);
 s=T.fresh();for(const c of B)T.progress(s,c.id).streak=5;s.progress.cpu.streak=3;s.progress.cpu.due=8;assert(T.next(s).question);assert.equal(s.step,8);
 // The DOM before answering must not identify a concept, its ray count or a star position.
-context.localStorage={getItem:()=>null,setItem(){}};context.document={addEventListener(){}};
+context.localStorage={getItem:()=>null,setItem(){}};context.document={addEventListener(){}};context.window={addEventListener(){}};
 vm.runInContext(scripts.at(-1).replace(/if\(chosenSide\)\{applySide\(chosenSide\);home\(\)\}else\{sideChoice\(\)\}/,'')+`\nglobalThis.renderQuestion=(id,answered)=>{state=Trainer.fresh();state.current={id,variant:0,order:[0,1,2,3],answered,selected:answered?0:null};let output='';shell=html=>output=html;quiz();return output};globalThis.neutralMap=()=>starMap();`,context);
 for(const c of B){const before=context.renderQuestion(c.id,false),after=context.renderQuestion(c.id,true);for(const leak of ['data-star-id=','concept-label','class="answer-concept"','ray-progress','aria-current="step"','class="device-drawing"'])assert(!before.includes(leak),c.id+' leaks '+leak);assert.equal((after.match(/data-star-id=/g)||[]).length,24);assert(after.includes('class="answer-concept"'));assert(after.includes('data-star-id="'+c.id+'" aria-current="step"'))}
 vm.runInContext(`globalThis.renderCourse=(complete)=>{state=Trainer.fresh();for(const c of BANK.filter(c=>c.group==='hardware'))Trainer.progress(state,c.id).streak=complete?5:4;let output='';shell=html=>output=html;home();return output};`,context);
