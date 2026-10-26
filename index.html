@@ -136,6 +136,14 @@ html[data-theme="light"] .chapter-card.chapter-mastered{background:linear-gradie
 @media(max-height:560px){.chapter-reward-overlay{place-items:start center}.chapter-reward-crest{width:94px;height:94px;margin-bottom:12px}.chapter-reward-star{width:76px;height:76px}.chapter-reward-dialog{padding-block:19px}.chapter-reward-honor{font-size:25px}.chapter-reward-dialog #chapter-reward-description{margin-top:12px}}
 @media(prefers-reduced-motion:reduce){.chapter-reward-overlay,.chapter-reward-dialog,.chapter-reward-star,.chapter-reward-ring,.chapter-reward-sparks i{animation:none}.chapter-reward-sparks{display:none}}
 
+/* The answer review must span the diagram layout, not inherit its narrow text column. */
+.answer-review{min-width:0;width:100%}
+@media(min-width:900px){.question-card:has(.tree-figure)>.answer-review{grid-column:1/-1}}
+/* Choose star rows from the panel width, including when the page has a sidebar. */
+.star-map{width:100%;min-width:0;container-type:inline-size}.star-map-groups{grid-template-columns:repeat(6,minmax(0,1fr))}.star-map-item .course-ray-star{width:min(100%,24px);height:auto;aspect-ratio:1;max-width:100%}.star-map-item .star-reset-ghost{max-width:100%}
+@container(max-width:740px){.star-map-groups{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container(max-width:320px){.star-map-groups{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 </style></head>
 <body><div id="app"></div><noscript>Для работы тренажёра включите JavaScript в браузере.</noscript><script>
 // Пять редакторски согласованных заданий для каждого понятия. Правильный ответ хранится первым.
